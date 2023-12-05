@@ -1,0 +1,130 @@
+//import necessary BlueJ files
+import java.util.Scanner;
+
+/**
+ * This program calculates the total bill for a group dining at a buffet restaurant.
+ * It considers the number of adults, children, and babies in the group,
+ * adds drink charges, calculates tips, taxes, and outputs the total bill.
+ * The tip is optional for groups under 10 people but mandatory (20%) for larger groups.
+ * Users can choose to tip in dollars or as a percentage.
+ * The final bill includes tax.
+ * 
+ * @author: Omaima Gohir
+ */
+
+//'Buffet' is the class 
+public class Buffet
+{
+    public static void main(String[] args)
+    {
+        
+        Scanner input = new Scanner(System.in);
+        
+        //Welcome to the restaurant!
+        System.out.println("Welcome to MooMoo's Buffet!");
+        
+        //fields declaration; variables declared within a class but outside of a method.
+        
+        int adultFee = 25; //integer variable type, Fee for each Adult
+        int childrenFee = 10; //integer variable type, Fee for each Child
+        int babyFee = 0; //integer variable type, Fee for each Baby
+         
+        //Variables to store calculated fees
+        int totalAdultFee; //integer variable type,for totalAdultFee
+        int totalChildrenFee; //integer variable type, for totalChildrenFee
+        int totalBabiesFee; //integer variable type, for totalBabiesFee
+        
+        //double variable type, for drinkPlace (price per drink)
+        double drinkPrice = 6.50;
+        //double variable type, for billTotal
+        double billTotal = 0;
+        
+        System.out.println("How many adults are in your group, ages 13+?");
+        //variable type integer, for the variable numAdults.
+        int numAdults = input.nextInt();
+        //totalAdultFee is number of Adults * adult fee which is 25
+        totalAdultFee = numAdults * adultFee;
+        
+        System.out.println("How many children are in your group that are ages 4-12?");
+        //variable type integer, for the variable numChildren.
+        int numChildren = input.nextInt();
+        //totalChildrenFee is number of Children * child fee which is 10
+        totalChildrenFee = numChildren * childrenFee;
+        
+        System.out.println("How many babies are in your group ages 3 and below?");
+        //variable type integer, for the variable numBabies
+        int numBabies = input.nextInt();
+        //totalBabiesFee is number of number of babies * baby fee which is 0 (free)
+        totalBabiesFee = numBabies * babyFee;
+
+        //integer variable type, for variable 'totalNumOfPeople', number of Adults + number of Children + number of Babies
+        int totalNumOfPeople = numAdults + numChildren + numBabies;
+        
+        // Calculating charges for drinks
+        System.out.println("How many drinks do you want?");
+        //integer variable type, for 'numOfDrinks'
+        int numOfDrinks = input.nextInt();
+
+        //double variable type, calculating the initial bill without tips and taxes
+        double totalPriceDrinks = numOfDrinks * drinkPrice;
+
+        //double variable type, new totalBill value, total adult, child and baby fee (0), + totalPriceDrinks
+        double totalBill = totalAdultFee + totalChildrenFee + totalBabiesFee + totalPriceDrinks;
+        
+        //adding tip for larger groups (>=10) or if the user chooses to tip
+        if (totalNumOfPeople >= 10) 
+        {
+            //totalBill will have a 20% tip, when the number of people is greater than or equal to 10
+            totalBill = totalBill + totalBill * 0.2;
+        } else {
+            /*
+             * this line handles cases where the user is asked yes or no, if no, the line ensures that any input is correctly processed
+             * in the next line. When i didnt add this line, the code didnt continue and stopped working. So this helps consume the 
+             * information without losing information
+             */
+            input.nextLine();
+            //asking user if they want to tip
+            System.out.println("Would you like to tip? (yes or no)");
+            //String return type, for the variable 'answer', takes string input.
+            String answer = input.nextLine();
+
+            //when answer equals "yes", continue.
+            if (answer.equals("yes")) 
+            {
+                //asks user if they want to tip in dollars or percent
+                System.out.println("Would you like to tip in Dollars or Percent? ($ or %)");
+                //String return type of variable, 'paymentType'
+                String paymentType = input.nextLine();
+                
+                //when payment equals the dollar sign (meaning user wants to tip in dollars)
+                if(paymentType.equals("$"))
+                {
+                    System.out.println("How much would you like to tip?");
+                    //integer variable type, for variable dollarTip, takes int input.
+                    int dollarTip = input.nextInt();
+                    //totalBill + dollarTip, since its not percent,add it as a whole number.
+                    totalBill = totalBill + dollarTip;
+
+                //when payment != "$"
+                } else {
+                    
+                    System.out.println("How much would you like to tip?");
+                    //integer variable type, for variable percentTip
+                    int percentTip = input.nextInt();
+                    //double varaible type, for variable totalTip, converts number to percent
+                    double totalTip = percentTip / 100.0;
+                    //totalBill + totalBill * totalTip, this means we get the amount after tip is added.
+                    totalBill = totalBill + totalBill * totalTip;
+                }
+            }
+        }
+        
+        //calculating the tax rate and adding it to the total bill
+        double taxRate = 0.13 * totalBill;
+        //variable type of totalBillWithTax, totalBill including Tax
+        double totalBillWithTax = totalBill + taxRate;
+        
+        //outputs the totalBill with Tax
+        System.out.println("Total Bill: $" + totalBillWithTax);
+    }
+}
